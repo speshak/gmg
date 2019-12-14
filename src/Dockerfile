@@ -13,7 +13,6 @@ RUN /bin/bash ./build.sh
 FROM node:lts-stretch as runtime
 COPY --from=builder /app/gmg-client /app/gmg-client
 COPY --from=builder /app/gmg-server /app/gmg-server
-COPY --from=builder /app/gmg-app/build /app/gmg-server/public
 WORKDIR /app/gmg-server
 CMD ["npm", "run", "start:release"]
 EXPOSE 80:80
