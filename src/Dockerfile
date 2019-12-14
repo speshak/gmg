@@ -1,12 +1,13 @@
 # Build Phase
 FROM node:lts-stretch as builder
+RUN apt-get update
+
 WORKDIR /app
 COPY ./gmg-app ./gmg-app
 COPY ./gmg-client ./gmg-client
 COPY ./gmg-server ./gmg-server
 COPY ./build.sh .
-RUN apt-get update && \
-    /bin/bash ./build.sh
+RUN /bin/bash ./build.sh
 
 # Run Phase
 FROM node:lts-stretch as runtime
