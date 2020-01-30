@@ -8,6 +8,7 @@ const config = require('config')
 const SocketManager = require('../sockets/SocketManager')
 const AlertManager = require('../alerts/AlertManager')
 const PersistenceManager = require('../data/PersistenceManager')
+const IotDeviceManager = require('../data/IotDeviceManager')
 const PollingClient = require('../grill/PollingClient')
 const SocketSender = require('../alerts/senders/SocketSender')
 const SlackSender = require('../alerts/senders/SlackSender')
@@ -77,6 +78,15 @@ function startServices() {
     pollingClient,
     logger: debug('src:PersistenceManager')
   })
+
+
+  if (process.env.AWS_IOT_HOST) {
+    const iotClient = new IotDeviceManager({
+      pollingClient,
+      logger: debug('src:IotDeviceManager')
+    })
+    iotClient.start()
+  }
 
   // Start all
   socketManager.start()
