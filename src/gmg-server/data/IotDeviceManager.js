@@ -36,7 +36,6 @@ class IotDeviceManager {
       keyPath: process.env.AWS_IOT_KEYPATH,
       certPath: process.env.AWS_IOT_CERTPATH,
       caPath: process.env.AWS_IOT_CAPATH,
-      clientId: process.env.AWS_IOT_CLIENT_ID,
       host: process.env.AWS_IOT_HOST
     });
 
