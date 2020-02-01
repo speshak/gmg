@@ -4,6 +4,7 @@
   "private": true,
   "proxy": "http://localhost:3001",
   "dependencies": {
+    "chart.js": "^2.9.3",
     "chartjs-plugin-streaming": "^1.5.0",
     "font-awesome": "^4.7.0",
     "lodash.merge": "latest",

@@ -9,6 +9,3 @@ set -e
 
 # Build Server
 (cd ./gmg-server && npm i)
-
-# Build Emulator
-(cd ./gmg-emulator && dotnet restore && dotnet build)
