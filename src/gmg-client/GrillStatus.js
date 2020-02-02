@@ -49,6 +49,8 @@ const getDesiredFoodTemp = (hex) => {
 class GrillStatus {
   constructor(bytes) {
     const hex = Buffer.from(bytes).toString('hex')
+    const date = new Date()
+    this.timestamp = date.toISOString()
     this.state = getGrillState(hex)
     this._hex = hex
     this.isOn = this.state === 'on'
