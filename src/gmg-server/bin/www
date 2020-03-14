@@ -8,9 +8,11 @@ const config = require('config')
 const SocketManager = require('../sockets/SocketManager')
 const AlertManager = require('../alerts/AlertManager')
 const PersistenceManager = require('../data/PersistenceManager')
+const IotDeviceManager = require('../data/IotDeviceManager')
 const PollingClient = require('../grill/PollingClient')
 const SocketSender = require('../alerts/senders/SocketSender')
 const SlackSender = require('../alerts/senders/SlackSender')
+const IoTSender = require('../alerts/senders/IoTSender')
 const slackConfig = config.get('alerts.slack')
 const appFactory = require('../app')
 const clientFactory = require('../grill')
@@ -60,16 +62,22 @@ function startServices() {
     logger: debug('src:SocketManager')
   })
 
+  senders = [
+      new SocketSender(socketManager),
+      new SlackSender(slackConfig),
+  ]
+
+  if (process.env.AWS_IOT_HOST) {
+      senders.push(new IoTSender())
+  }
+
   /**
    * Create Alert Manager
    */
   const alertManager = new AlertManager({
     pollingClient,
     handlers: getAlertHandlers(),
-    senders: [
-      new SocketSender(socketManager),
-      new SlackSender(slackConfig)
-    ],
+    senders: senders,
     logger: debug('src:AlertManager')
   })
 
@@ -77,6 +85,15 @@ function startServices() {
     pollingClient,
     logger: debug('src:PersistenceManager')
   })
+
+
+  if (process.env.AWS_IOT_HOST) {
+    const iotClient = new IotDeviceManager({
+      pollingClient,
+      logger: debug('src:IotDeviceManager')
+    })
+    iotClient.start()
+  }
 
   // Start all
   socketManager.start()
