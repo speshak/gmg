@@ -9,6 +9,7 @@ const SocketManager = require('../sockets/SocketManager')
 const AlertManager = require('../alerts/AlertManager')
 const PersistenceManager = require('../data/PersistenceManager')
 const IotDeviceManager = require('../data/IotDeviceManager')
+const StatsDManager = require('../data/StatsDManager')
 const PollingClient = require('../grill/PollingClient')
 const SocketSender = require('../alerts/senders/SocketSender')
 const SlackSender = require('../alerts/senders/SlackSender')
@@ -93,6 +94,15 @@ function startServices() {
       logger: debug('src:IotDeviceManager')
     })
     iotClient.start()
+  }
+
+
+  if (process.env.STATSD_HOST) {
+    const statsdClient = new StatsDManager({
+      pollingClient,
+      logger: debug('src:StatsDManager')
+    })
+    statsdClient.start()
   }
 
   // Start all

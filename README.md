@@ -13,6 +13,7 @@ Well, I like to Grill, and I often utilize the grill overnight when cooking larg
 1. Timers
 1. Grill controls (Power, food temp, grill temp)
 1. AWS IoT Device Output
+1. StatsD Output
 
 ## Configuration
 There are number of way to configure the server. You can set env variables in Docker to override any config that is provided in "custom-environment-variables" file located in the config directory. Alternatively, just override the default values set in default.json. The only option that you need to configure is the Slack web hook URL (`GMG_ALERTS_SLACK_WEBHOOKURL`). If you want to set your own alert sounds, simply override the corresponding mp3 file in the `public/alerts` directory.
@@ -98,6 +99,11 @@ Define the following environmental variables:
 1. `AWS_IOT_CERTPATH` - Path to device certificate
 1. `AWS_IOT_CAPATH` - Path to sigining CA. If using the IoT service signed certs this will be `AmazonRootCA1`
 1. `AWS_IOT_HOST` - Custom hostname for connecting to AWS IoT service.
+
+## StatsD Output
+
+Metrics can be sent to a [StatsD](https://github.com/statsd/statsd) server.  To
+enable, set the `STATSD_HOST` environmental variable for the container.
 
 ## Preview
 ![alt text](assets/preview.jpg)
