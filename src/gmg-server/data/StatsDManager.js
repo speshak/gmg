@@ -29,6 +29,19 @@ class StatsDManager {
   async stop() {
     if (!this._started) throw new Error('Already stopped!')
     this._started = false
+
+    // Zero the gauges
+    this.sendStatus({
+      currentGrillTemp: 0,
+      desiredGrillTemp: 0,
+      currentFoodTemp: 0,
+      desiredFoodTemp: 0,
+
+      lowPelletAlarmActive: false,
+      fanModeActive: false
+    })
+
+
     this._sdc.close()
     this._pollingClient.removeListener('status', this._onStatus)
   }
@@ -39,6 +52,11 @@ class StatsDManager {
       return
     }
 
+    this.sendStatus(status)
+  }
+
+
+  function sendStatus(status) {
     try {
       this._logger('Sending StatsD metrics');
       this._sdc.gauge('gmg.grill.temp', status.currentGrillTemp);
