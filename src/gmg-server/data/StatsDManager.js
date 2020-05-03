@@ -4,13 +4,15 @@ class StatsDManager {
   constructor({ pollingClient, logger }) {
     this._pollingClient = pollingClient
     this._logger = (message) => {
-      if (logger)
+      if (logger) {
         logger(message)
-      else
+      } else {
         console.log(message)
+      }
     }
 
     this._sdc = new StatsDClient({host: process.env.STATSD_HOST});
+    this._zeroed = true
 
     this.start = this.start.bind(this)
     this.stop = this.stop.bind(this)
@@ -30,6 +32,26 @@ class StatsDManager {
     if (!this._started) throw new Error('Already stopped!')
     this._started = false
 
+    this.zeroGauges()
+    this._sdc.close()
+    this._pollingClient.removeListener('status', this._onStatus)
+  }
+
+
+  async _onStatus(status) {
+    if (!status.isOn) {
+      if (!this._zeroed) {
+        this.zeroGauges()
+      }
+      return
+    }
+
+    this.sendStatus(status)
+    this._zeroed = false
+  }
+
+
+  zeroGauges() {
     // Zero the gauges
     this.sendStatus({
       currentGrillTemp: 0,
@@ -41,22 +63,11 @@ class StatsDManager {
       fanModeActive: false
     })
 
-
-    this._sdc.close()
-    this._pollingClient.removeListener('status', this._onStatus)
+    this._zeroed = true
   }
 
 
-  async _onStatus(status) {
-    if (!status.isOn) {
-      return
-    }
-
-    this.sendStatus(status)
-  }
-
-
-  function sendStatus(status) {
+  sendStatus(status) {
     try {
       this._logger('Sending StatsD metrics');
       this._sdc.gauge('gmg.grill.temp', status.currentGrillTemp);
@@ -67,7 +78,7 @@ class StatsDManager {
       this._sdc.gauge('gmg.pellet_alarm', (status.lowPelletAlarmActive ? 1 : 0));
       this._sdc.gauge('gmg.fan_mode', (status.fanModeActive ? 1 : 0));
     } catch (err) {
-      this._logger("Error publishing to statsd " + err);
+      this._logger('Error publishing to statsd ' + err);
     }
   }
 }
