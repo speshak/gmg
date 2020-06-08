@@ -26,7 +26,7 @@ class IoTSender {
 
     async send(alert) {
       try {
-        console.log("Sending IoT alert")
+        console.log('Sending IoT alert')
         const json = JSON.stringify(alert)
         this.iotDevice.publish('smoker_alerts', json);
       } catch (err) {
