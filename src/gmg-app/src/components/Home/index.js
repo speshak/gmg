@@ -14,7 +14,7 @@ import './index.css'
 import 'typeface-roboto'
 import { Chart } from 'react-chartjs-2'
 import 'chartjs-plugin-streaming'
-import * as moment from 'moment'
+import dayjs from 'dayjs'
 
 const GRILL_TEMPERATURE_DATASET = 0
 const FOOD_TEMPERATURE_DATASET = 1
@@ -112,7 +112,7 @@ export default class Home extends Component {
       this.sendAlert(alert)
     })
 
-    const since = moment().subtract(8, 'hours').unix(Number)
+    const since = dayjs().subtract(8, 'hours').unix()
     this.client.getTemperatureHistory(since).then(history => {
       if (history.length === 0) return
 

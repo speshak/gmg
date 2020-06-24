@@ -6,10 +6,10 @@
   "dependencies": {
     "chart.js": "^2.9.3",
     "chartjs-plugin-streaming": "^1.5.0",
+    "dayjs": "^1.8.28",
     "font-awesome": "^4.7.0",
     "lodash.merge": "latest",
     "material-ui": "^0.20.2",
-    "moment": "^2.25.0",
     "prop-types": "latest",
     "react": "^16.13.1",
     "react-chartjs-2": "^2.9.0",

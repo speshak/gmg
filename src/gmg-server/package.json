@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start:dev": "export NODE_ENV=development && export DEBUG=src.* && export PORT=3001 && node ./bin/www",
-    "start:release": "export NODE_ENV=production && export DEBUG=src.* && export PORT=80 && node ./bin/www"
+    "start:release": "export NODE_ENV=production && export DEBUG=src.* && export PORT=80 && node ./bin/www",
+    "lint": "eslint ."
   },
   "dependencies": {
     "aws-iot-device-sdk": "^2.2.4",
@@ -21,5 +22,9 @@
     "socket.io": "^2.1.1",
     "sqlite": "^3.0.6",
     "statsd-client": "^0.4.4"
+  },
+  "devDependencies": {
+    "eslint": "^7.2.0",
+    "eslint-plugin-import": "^2.14.0"
   }
 }

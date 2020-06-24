@@ -8,8 +8,7 @@ module.exports.routeHandler = (handler) => {
       } catch (err) {
          if (err instanceof errors.InvalidCommand) {
             res.status(400).send(err.message)
-         }
-         else {
+         } else {
             next(err)
          }
       }

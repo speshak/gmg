@@ -4,10 +4,11 @@ class IotDeviceManager {
   constructor({ pollingClient, logger }) {
     this._pollingClient = pollingClient
     this._logger = (message) => {
-      if (logger)
+      if (logger) {
         logger(message)
-      else
+      } else {
         console.log(message)
+      }
     }
     this._deviceSetup()
 
@@ -66,10 +67,10 @@ class IotDeviceManager {
 
     try {
       this._logger('Updating IoT device shadow');
-      this.iotShadow.update(process.env.AWS_IOT_THING, { "state": { "desired": status } });
-      this.iotShadow.publish('smoker_status',  JSON.stringify(status));
+      this.iotShadow.update(process.env.AWS_IOT_THING, { 'state': { 'desired': status } });
+      this.iotShadow.publish('smoker_status', JSON.stringify(status));
     } catch (err) {
-      this._logger("Error updating shadow: " + err);
+      this._logger('Error updating shadow: ' + err);
     }
   }
 }
