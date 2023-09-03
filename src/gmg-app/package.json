@@ -16,7 +16,6 @@
     "react-dom": "^16.13.1",
     "react-s-alert": "^1.4.1",
     "react-scripts": "2.1.1",
-    "react-tap-event-plugin": "^3.0.3",
     "socket.io-client": "^2.1.1",
     "typeface-roboto": "0.0.54",
     "whatwg-fetch": "^2.0.4"
