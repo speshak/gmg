@@ -2,6 +2,7 @@
 set -e
 
 # Build UI
+export NODE_OPTIONS=--openssl-legacy-provider
 (cd ./gmg-app && npm i && npm run publish)
 
 # Build Client
